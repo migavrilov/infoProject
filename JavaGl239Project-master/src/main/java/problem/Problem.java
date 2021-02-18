@@ -131,8 +131,11 @@ public class Problem {
      * @param gl переменная OpenGL для рисования
      */
     public void render(GL2 gl) {
-        Vector2 a = new Vector2(1, 0.5f);
-        Vector2 b = new Vector2(0f, 0f);
-        Vector2.renderLine(gl, a, b, 5f);
+        Vector2 a = new Vector2(0.5f, 0.5f);
+        Vector2 b = new Vector2(1f, 0f);
+        Vector2 c = new Vector2(-0.2f, -0.3f);
+        //Vector2.renderLine(gl, a, b, 3f);
+//        Vector2.renderPoint(gl, c, 5);
+        Vector2.renderTriangle(gl, a, b, c, false, 3);
     }
 }
