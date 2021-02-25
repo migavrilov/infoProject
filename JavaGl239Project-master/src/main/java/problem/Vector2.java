@@ -36,10 +36,52 @@ public class Vector2 {
             gl.glEnd();
         } else {
             renderLine(gl, a, b, width);
-            renderLine(gl, a, c, width);
             renderLine(gl, b, c, width);
+            renderLine(gl, c, a, width);
         }
 
     }
+
+    public static void renderQuad (GL2 gl, Vector2 a, Vector2 b, Vector2 c, Vector2 d, boolean fill, float width) {
+        if (fill) {
+            renderTriangle(gl, a, b, c, fill, width);
+            renderTriangle(gl, b, c, d, fill, width);
+            gl.glEnd();
+        } else {
+            renderLine(gl, a, b, width);
+            renderLine(gl, b, c, width);
+            renderLine(gl, c, d, width);
+            renderLine(gl, d, a, width);
+        }
+    }
+
+    public static void renderCircle (GL2 gl, Vector2 a, float r, boolean fill, float width) {
+        if (!(fill)) {
+            float d = 0.000001f;
+            float x = -r;
+            while (x <= r) {
+                float y1 = (float) Math.sqrt(r * r - x * x);
+                float y2 = -1 * (float) Math.sqrt(r * r - x * x);
+                Vector2 b = new Vector2(x + a.x, y1 + a.y);
+                Vector2 c = new Vector2(x + a.x, y2 + a.y);
+                renderPoint(gl, b, width);
+                renderPoint(gl, c, width);
+                x += d;
+            }
+        } else {
+            float d = 0.00001f;
+            float x = -r;
+            while (x <= r) {
+                float y1 = (float) Math.sqrt(r * r - x * x);
+                float y2 = -1 * (float) Math.sqrt(r * r - x * x);
+                Vector2 b = new Vector2(x + a.x, y1 + a.y);
+                Vector2 c = new Vector2(x + a.x, y2 + a.y);
+                renderLine(gl, a, b, width);
+                renderLine(gl, a, c, width);
+                x += d;
+            }
+        }
+    }
+
 
 }

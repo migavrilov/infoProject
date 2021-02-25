@@ -134,8 +134,10 @@ public class Problem {
         Vector2 a = new Vector2(0.5f, 0.5f);
         Vector2 b = new Vector2(1f, 0f);
         Vector2 c = new Vector2(-0.2f, -0.3f);
+        Vector2 d = new Vector2(-0.2f, -0.7f);
         //Vector2.renderLine(gl, a, b, 3f);
 //        Vector2.renderPoint(gl, c, 5);
-        Vector2.renderTriangle(gl, a, b, c, false, 3);
+        //Vector2.renderQuad(gl, a, b, c, d, false, 3);
+        Vector2.renderCircle(gl, c, 0.1f, true, 0.01f);
     }
 }
