@@ -138,6 +138,6 @@ public class Problem {
         //Vector2.renderLine(gl, a, b, 3f);
 //        Vector2.renderPoint(gl, c, 5);
         //Vector2.renderQuad(gl, a, b, c, d, false, 3);
-        Vector2.renderCircle(gl, c, 0.1f, true, 0.01f);
+        Figures.renderCircle(gl, c, 0.1f, true, 0.01f);
     }
 }
