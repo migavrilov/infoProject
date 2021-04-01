@@ -3,7 +3,7 @@ package problem;
 import javax.media.opengl.GL2;
 
 public class Figures {
-    public static void renderPoint (GL2 gl, Vector2 a, float size) {
+    public static void renderPoint (GL2 gl, Point a, float size) {
         gl.glPointSize(size);
         gl.glBegin(GL2.GL_POINTS);
         gl.glColor3d(0, 0.5, 1);
@@ -11,7 +11,7 @@ public class Figures {
         gl.glEnd();
     }
 
-    public static void renderLine (GL2 gl, Vector2 a, Vector2 b, float width) {
+    public static void renderLine (GL2 gl, Point a, Point b, float width) {
         gl.glLineWidth(width);
         gl.glBegin(GL2.GL_LINES);
         gl.glColor3d(0,0.7,1);
@@ -20,7 +20,7 @@ public class Figures {
         gl.glEnd();
     }
 
-    public static void renderTriangle (GL2 gl, Vector2 a, Vector2 b, Vector2 c, boolean fill, float width) {
+    public static void renderTriangle (GL2 gl, Point a, Point b, Point c, boolean fill, float width) {
         if (fill) {
             gl.glBegin(GL2.GL_TRIANGLES);
             gl.glColor3d(0, 0.7, 1);
@@ -36,28 +36,31 @@ public class Figures {
 
     }
 
-    public static void renderQuad (GL2 gl, Vector2 a, Vector2 b, Vector2 c, Vector2 d, boolean fill, float width) {
+    public static void renderQuad (GL2 gl, Point a, Point b, Point c, Point d, boolean fill, float width) {
         if (fill) {
             renderTriangle(gl, a, b, c, fill, width);
             renderTriangle(gl, b, c, d, fill, width);
-            gl.glEnd();
+            renderTriangle(gl, a, c, d, fill, width);
+            renderTriangle(gl, a, b, d, fill, width);
         } else {
             renderLine(gl, a, b, width);
             renderLine(gl, b, c, width);
             renderLine(gl, c, d, width);
             renderLine(gl, d, a, width);
         }
+
+        gl.glEnd();
     }
 
-    public static void renderCircle (GL2 gl, Vector2 a, float r, boolean fill, float width) {
+    public static void renderCircle (GL2 gl, Point a, float r, boolean fill, float width) {
         if (!(fill)) {
             float d = 0.000001f;
             float x = -r;
             while (x <= r) {
                 float y1 = (float) Math.sqrt(r * r - x * x);
                 float y2 = -1 * (float) Math.sqrt(r * r - x * x);
-                Vector2 b = new Vector2(x + a.x, y1 + a.y);
-                Vector2 c = new Vector2(x + a.x, y2 + a.y);
+                Point b = new Point(x + a.x, y1 + a.y);
+                Point c = new Point(x + a.x, y2 + a.y);
                 renderPoint(gl, b, width);
                 renderPoint(gl, c, width);
                 x += d;
@@ -68,8 +71,8 @@ public class Figures {
             while (x <= r) {
                 float y1 = (float) Math.sqrt(r * r - x * x);
                 float y2 = -1 * (float) Math.sqrt(r * r - x * x);
-                Vector2 b = new Vector2(x + a.x, y1 + a.y);
-                Vector2 c = new Vector2(x + a.x, y2 + a.y);
+                Point b = new Point(x + a.x, y1 + a.y);
+                Point c = new Point(x + a.x, y2 + a.y);
                 renderLine(gl, a, b, width);
                 renderLine(gl, a, c, width);
                 x += d;

@@ -3,6 +3,7 @@ package problem;
 import javax.media.opengl.GL2;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 /**
@@ -13,13 +14,13 @@ public class Problem {
      * текст задачи
      */
     public static final String PROBLEM_TEXT = "ПОСТАНОВКА ЗАДАЧИ:\n" +
-            "Заданы два множества точек в пространстве.\n" +
-            "Требуется построить пересечения и разность этих множеств";
+            "Задано множество точек в пространстве.\n" +
+            "Требуется построить четырехугольник с максимальной площадью]";
 
     /**
      * заголовок окна
      */
-    public static final String PROBLEM_CAPTION = "Итоговый проект ученика 10-7 Иванова Ивана";
+    public static final String PROBLEM_CAPTION = "Итоговый проект ученика 10-2 Гаврилова Михаила";
 
     /**
      * путь к файлу
@@ -29,7 +30,11 @@ public class Problem {
     /**
      * список точек
      */
-    private ArrayList<Point> points;
+    private final ArrayList<Point> points;
+
+    private Tetragon tetragon = null;
+    private double max_area = 0;
+    private boolean ready = false;
 
     /**
      * Конструктор класса задачи
@@ -43,10 +48,9 @@ public class Problem {
      *
      * @param x      координата X точки
      * @param y      координата Y точки
-     * @param setVal номер множества
      */
-    public void addPoint(double x, double y, int setVal) {
-        Point point = new Point(x, y, setVal);
+    public void addPoint(double x, double y) {
+        Point point = new Point(x, y);
         points.add(point);
     }
 
@@ -54,19 +58,29 @@ public class Problem {
      * Решить задачу
      */
     public void solve() {
-        // перебираем пары точек
-        for (Point p : points) {
-            for (Point p2 : points) {
-                // если точки являются разными
-                if (p != p2) {
-                    // если координаты у них совпадают
-                    if (Math.abs(p.x - p2.x) < 0.0001 && Math.abs(p.y - p2.y) < 0.0001) {
-                        p.isSolution = true;
-                        p2.isSolution = true;
+        for (int i = 0; i < points.size(); i++) {
+            for (int j = i + 1; j < points.size(); j++) {
+                for (int k = j + 1; k < points.size(); k++) {
+                    for (int z = k + 1; z < points.size(); z++) {
+                        Tetragon tet = new Tetragon (points.get(i), points.get(j), points.get(k), points.get(z));
+                        double area = 0;
+                        if (tet.is_convex()) {
+                            tet.sort_points();
+                            area = tet.get_convex_area();
+                        } else {
+                            area = tet.get_non_convex_area();
+                        }
+
+                        if (max_area < area) {
+                            max_area = area;
+                            tetragon = tet;
+                        }
                     }
                 }
             }
         }
+        ready = true;
+
     }
 
     /**
@@ -83,7 +97,7 @@ public class Problem {
                 double y = sc.nextDouble();
                 int setVal = sc.nextInt();
                 sc.nextLine();
-                Point point = new Point(x, y, setVal);
+                Point point = new Point(x, y);
                 points.add(point);
             }
         } catch (Exception ex) {
@@ -98,7 +112,7 @@ public class Problem {
         try {
             PrintWriter out = new PrintWriter(new FileWriter(FILE_NAME));
             for (Point point : points) {
-                out.printf("%.2f %.2f %d\n", point.x, point.y, point.setNumber);
+                out.printf("%.2f %.2f %d\n", point.x, point.y);
             }
             out.close();
         } catch (IOException ex) {
@@ -122,6 +136,9 @@ public class Problem {
      * Очистить задачу
      */
     public void clear() {
+        ready = false;
+        tetragon = null;
+        max_area = 0;
         points.clear();
     }
 
@@ -131,13 +148,11 @@ public class Problem {
      * @param gl переменная OpenGL для рисования
      */
     public void render(GL2 gl) {
-        Vector2 a = new Vector2(0.5f, 0.5f);
-        Vector2 b = new Vector2(1f, 0f);
-        Vector2 c = new Vector2(-0.2f, -0.3f);
-        Vector2 d = new Vector2(-0.2f, -0.7f);
-        //Vector2.renderLine(gl, a, b, 3f);
-//        Vector2.renderPoint(gl, c, 5);
-        //Vector2.renderQuad(gl, a, b, c, d, false, 3);
-        Figures.renderCircle(gl, c, 0.1f, true, 0.01f);
+        for (Point point:points){
+            Figures.renderPoint(gl, point, 5);
+        }
+        if (ready)
+            Figures.renderQuad (gl, tetragon.a, tetragon.b, tetragon.c, tetragon.d, false, 0.1f);
+
     }
 }
