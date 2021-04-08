@@ -15,7 +15,7 @@ public class Problem {
      */
     public static final String PROBLEM_TEXT = "ПОСТАНОВКА ЗАДАЧИ:\n" +
             "Задано множество точек в пространстве.\n" +
-            "Требуется построить четырехугольник с максимальной площадью]";
+            "Требуется построить четырехугольник с максимальной площадью";
 
     /**
      * заголовок окна
@@ -73,7 +73,7 @@ public class Problem {
 
                         if (max_area < area) {
                             max_area = area;
-                            tetragon = tet;
+                            tetragon = new Tetragon(tet.a, tet.b, tet.c, tet.d);
                         }
                     }
                 }
@@ -95,7 +95,6 @@ public class Problem {
             while (sc.hasNextLine()) {
                 double x = sc.nextDouble();
                 double y = sc.nextDouble();
-                int setVal = sc.nextInt();
                 sc.nextLine();
                 Point point = new Point(x, y);
                 points.add(point);
@@ -152,7 +151,7 @@ public class Problem {
             Figures.renderPoint(gl, point, 5);
         }
         if (ready)
-            Figures.renderQuad (gl, tetragon.a, tetragon.b, tetragon.c, tetragon.d, false, 0.1f);
+            Figures.renderQuad (gl, tetragon.a, tetragon.b, tetragon.c, tetragon.d, false, 3f);
 
     }
 }

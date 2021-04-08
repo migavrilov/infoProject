@@ -15,17 +15,16 @@ public class Tetragon {
 
     public double get_non_convex_area () {
         Point[] dots = {a, b, c, d};
+        double max_area = 0;
         int id1 = 0;
-        int id2 = 1;
-        int id3 = 2;
-        int id4 = 3;
-        double s = get_triangle_area(dots[id1], dots[id2], dots[id3]);
-        double max_area = s;
+        int id2 = 0;
+        int id3 = 0;
+        int id4 = 0;
 
         for (int i = 0; i < 4; i++) {
             for (int j = i + 1; j < 4; j++) {
                 for (int k = j + 1; k < 4; k++) {
-                    s = get_triangle_area(dots[i], dots[j], dots[k]);
+                    double s = get_triangle_area(dots[i], dots[j], dots[k]);
                     if (s > max_area) {
                         max_area = s;
                         id1 = i;
@@ -42,25 +41,26 @@ public class Tetragon {
         double s2 = get_triangle_area(dots[id1], dots[id2], dots[id4]) + get_triangle_area(dots[id2], dots[id3], dots[id4]);
         //s3 134 + 234
         double s3 = get_triangle_area(dots[id1], dots[id3], dots[id4]) + get_triangle_area(dots[id2], dots[id3], dots[id4]);
-
-        if (s1 >= s2 && s2 >= s3) {
+        if (s1 >= s2 && s1 >= s3) {
             a = dots[id1];
             b = dots[id2];
             c = dots[id4];
             d = dots[id3];
-        } else if (s2 >= s3 && s3 >= s1) {
+            return s1;
+        } else if (s2 >= s3 && s2 >= s1) {
             a = dots[id1];
             b = dots[id2];
             c = dots[id3];
             d = dots[id4];
+            return s2;
         } else {
             a = dots[id1];
             b = dots[id3];
             c = dots[id2];
             d = dots[id4];
+            return s3;
         }
 
-        return Math.max(s1, Math.max(s2, s3));
     }
 
     public double get_triangle_area (Point a, Point b, Point c) {
@@ -87,10 +87,7 @@ public class Tetragon {
         for (int i = 0; i < 4; i++)
             angles[i] = Math.atan2(center.y - dots[i].y, center.x - dots[i].x);
 
-        for (int i = 0; i < 4; i++) {
-            System.out.println(dots[i].x + " - " + dots[i].y);
-        }
-        System.out.println();
+
         for (int i = 0; i < 4; i++) {
             int min_id = min_angle_from_id(angles, i);
             double angle = angles[min_id];
@@ -105,9 +102,7 @@ public class Tetragon {
         c = dots[2];
         d = dots[3];
 
-        for (int i = 0; i < 4; i++) {
-            System.out.println(dots[i].x + " - " + dots[i].y);
-        }
+
 
 
     }
