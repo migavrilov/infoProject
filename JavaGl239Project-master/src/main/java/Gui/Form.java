@@ -84,8 +84,8 @@ public class Form extends JFrame {
         addPoint.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                double x = Double.parseDouble(xPointField.getText());
-                double y = Double.parseDouble(yPointField.getText());
+                double x = Double.parseDouble(xPointField.getText().replace(",", "."));
+                double y = Double.parseDouble(yPointField.getText().replace(",", "."));
                 renderer.problem.addPoint(x, y);
             }
         });

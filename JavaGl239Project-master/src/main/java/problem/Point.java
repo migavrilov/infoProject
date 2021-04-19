@@ -3,24 +3,12 @@ package problem;
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import java.util.Random;
+import static problem.Figures.renderPoint;
 
 /**
  * Класс точки
  */
 public class Point {
-    /**
-     * константа множества 1
-     */
-    public static final int SET_1 = 0;
-    /**
-     * константа множества 2
-     */
-    public static final int SET_2 = 1;
-    /**
-     * пересекается ли точка с точкой из другого множества
-     * (является ли она решением)
-     */
-    boolean isSolution = false;
     /**
      * x - координата точки
      */
@@ -48,8 +36,8 @@ public class Point {
      */
     static Point getRandomPoint() {
         Random r = new Random();
-        double nx = r.nextDouble() * 2 - 1;
-        double ny = r.nextDouble() * 2 - 1;
+        double nx = Math.round((r.nextDouble() * 2 - 1)*100)/100.0;
+        double ny = Math.round((r.nextDouble() * 2 - 1)*100)/100.0;
         return new Point(nx, ny);
     }
 
@@ -58,12 +46,8 @@ public class Point {
      *
      * @param gl переменная OpenGl для рисования
      */
-    void render(GL2 gl) {
-        gl.glPointSize(3);
-        gl.glBegin(GL.GL_POINTS);
-        gl.glVertex2d(x, y);
-        gl.glEnd();
-        gl.glPointSize(1);
+    void render(GL2 gl, float size, float[] color) {
+        renderPoint(gl, this, size, color);
     }
 
     /**

@@ -14,8 +14,10 @@ public class Problem {
      * текст задачи
      */
     public static final String PROBLEM_TEXT = "ПОСТАНОВКА ЗАДАЧИ:\n" +
-            "Задано множество точек в пространстве.\n" +
-            "Требуется построить четырехугольник с максимальной площадью";
+            "На плоскости задано множество точек.\n" +
+            "Найти из них такие 4 точки, что построенный\n" +
+            "по ним 4-хугольник не является самопересекающимся и имеет при этом\n" +
+            "максимальную площадь.\n";
 
     /**
      * заголовок окна
@@ -58,28 +60,31 @@ public class Problem {
      * Решить задачу
      */
     public void solve() {
-        for (int i = 0; i < points.size(); i++) {
-            for (int j = i + 1; j < points.size(); j++) {
-                for (int k = j + 1; k < points.size(); k++) {
-                    for (int z = k + 1; z < points.size(); z++) {
-                        Tetragon tet = new Tetragon (points.get(i), points.get(j), points.get(k), points.get(z));
-                        double area = 0;
-                        if (tet.is_convex()) {
-                            tet.sort_points();
-                            area = tet.get_convex_area();
+        if (points.size() < 4) // not going to work if there is less than 4 dots <=> no tetragons
+            return;
+
+        for (int i = 0; i < points.size(); i++) { // first point
+            for (int j = i + 1; j < points.size(); j++) { // second point
+                for (int k = j + 1; k < points.size(); k++) { // third point
+                    for (int z = k + 1; z < points.size(); z++) { // forth point
+                        Tetragon tet = new Tetragon (points.get(i), points.get(j), points.get(k), points.get(z)); // creating object of tetragon with 4 points
+                        double area = 0; // set area to 0
+                        if (tet.is_convex()) { // check if tetragon is convex
+                            tet.sort_points(); // sort points clockwise
+                            area = tet.get_convex_area(); // get area of convex tetragon
                         } else {
-                            area = tet.get_non_convex_area();
+                            area = tet.get_non_convex_area(); // get area of not convex tetragon
                         }
 
-                        if (max_area < area) {
-                            max_area = area;
-                            tetragon = new Tetragon(tet.a, tet.b, tet.c, tet.d);
+                        if (max_area < area) { // if max area is smaller that new area
+                            max_area = area; // change max area to its new value
+                            tetragon = new Tetragon(tet.a, tet.b, tet.c, tet.d); // create corresponding tetragon
                         }
                     }
                 }
             }
         }
-        ready = true;
+        ready = true; // set ready to true makes render() draw the answer (tetragon with max area)
 
     }
 
@@ -111,7 +116,7 @@ public class Problem {
         try {
             PrintWriter out = new PrintWriter(new FileWriter(FILE_NAME));
             for (Point point : points) {
-                out.printf("%.2f %.2f %d\n", point.x, point.y);
+                out.println(Double.toString(point.x).replace(".", ",") + " " + Double.toString(point.y).replace(".", ","));
             }
             out.close();
         } catch (IOException ex) {
@@ -147,11 +152,19 @@ public class Problem {
      * @param gl переменная OpenGL для рисования
      */
     public void render(GL2 gl) {
+        int size = 10;
         for (Point point:points){
-            Figures.renderPoint(gl, point, 5);
+            float[] color = {0, 0.5f, 1};
+            point.render(gl, size, color);
         }
-        if (ready)
-            Figures.renderQuad (gl, tetragon.a, tetragon.b, tetragon.c, tetragon.d, false, 3f);
+        if (ready) {
+            float[] color = {1, 0, 0};
+            tetragon.render(gl, false, 3f, color);
+            tetragon.a.render(gl, size, color);
+            tetragon.b.render(gl, size, color);
+            tetragon.c.render(gl, size, color);
+            tetragon.d.render(gl, size, color);
+        }
 
     }
 }
