@@ -79,7 +79,7 @@ public class Problem {
                         } else {
                             // now it can be either not convex or degenerate (triangle)
                             if(tet.is_degenerate()) {  //we are not interested in degenerate tetragons, because it means sides are overlapping or have angle 180 degrees - not actual triangle
-                                System.out.println("Some tetragons might me degenerate and therefore they were not shown");
+                                System.out.println("Some tetragons might me degenerate and therefore they were not shown, because they don`t correspond to problem");
                                 continue;
                             }
                             area = tet.get_non_convex_area(); // get area of not convex tetragon
@@ -173,6 +173,11 @@ public class Problem {
             tetragon.b.render(gl, size, color);
             tetragon.c.render(gl, size, color);
             tetragon.d.render(gl, size, color);
+        }
+
+        if (ready && tetragon == null) {
+            System.out.println("No actual tetragons were found");
+            ready = false;
         }
 
     }
