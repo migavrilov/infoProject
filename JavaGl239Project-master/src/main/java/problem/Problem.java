@@ -60,8 +60,10 @@ public class Problem {
      * Решить задачу
      */
     public void solve() {
-        if (points.size() < 4) // not going to work if there is less than 4 dots <=> no tetragons
+        if (points.size() < 4) { // not going to work if there is less than 4 dots <=> no tetragons
+            System.out.println("Not enough dots");
             return;
+        }
 
         for (int i = 0; i < points.size(); i++) { // first point
             for (int j = i + 1; j < points.size(); j++) { // second point
@@ -73,6 +75,11 @@ public class Problem {
                             tet.sort_points(); // sort points clockwise
                             area = tet.get_convex_area(); // get area of convex tetragon
                         } else {
+                            // now it can be either not convex or degenerate (triangle)
+                            if(tet.is_degenerate()) {  //we are not interested in degenerate tetragons, because they are triangles
+                                System.out.println("Some tetragons might me degenerate and therefore they were not shown");
+                                continue;
+                            }
                             area = tet.get_non_convex_area(); // get area of not convex tetragon
                         }
 
@@ -157,7 +164,7 @@ public class Problem {
             float[] color = {0, 0.5f, 1};
             point.render(gl, size, color);
         }
-        if (ready) {
+        if (ready && tetragon != null) {
             float[] color = {1, 0, 0};
             tetragon.render(gl, false, 3f, color);
             tetragon.a.render(gl, size, color);

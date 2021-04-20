@@ -123,6 +123,36 @@ public class Tetragon {
 
     }
 
+    public boolean is_degenerate () {
+        // the same stuff as in is_convex
+        Point[][] dots = {{a, b, c, d}, {a, b, d, c}, {a, c, b, d}}; // all possible tetragons: 1 - normal, 2,3 - sides are intersecting with each other
+        boolean[] ress = new boolean[3];
+        for (int i = 0; i < 3; i++) {
+            // here I get points that represents sides of tetragon as vectors
+            Point lab = new Point(dots[i][1].x - dots[i][0].x, dots[i][1].y - dots[i][0].y);
+            Point lad = new Point(dots[i][3].x - dots[i][0].x, dots[i][3].y - dots[i][0].y);
+            Point lbc = new Point(dots[i][2].x - dots[i][1].x, dots[i][2].y - dots[i][1].y);
+            Point lcd = new Point(dots[i][3].x - dots[i][2].x, dots[i][3].y - dots[i][2].y);
+
+            //cross product
+            double l1 = lab.x * lbc.y - lab.y * lbc.x;
+            double l2 = lbc.x * lcd.y - lbc.y * lcd.x;
+            double l3 = lcd.x * (-lad.y) - lcd.y * (-lad.x);
+            double l4 = (-lad.x) * (lab.y) - (-lad.y) * lab.x;
+
+            if (l1 == 0 || l2 == 0 || l3 == 0 || l4 == 0) // if so, it means sides are overlapping or have angle 180 degrees
+                ress[i] = true;
+            else
+                ress[i] = false;
+        }
+
+        if (ress[0] || ress[1] || ress[2]) { //it means it is degenerate
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 
     public boolean is_convex () {
         Point[][] dots = {{a, b, c, d}, {a, b, d, c}, {a, c, b, d}}; // all possible tetragons: 1 - normal, 2,3 - sides are intersecting with each other
@@ -132,8 +162,6 @@ public class Tetragon {
             Point lab = new Point(dots[i][1].x - dots[i][0].x, dots[i][1].y - dots[i][0].y);
             Point lad = new Point(dots[i][3].x - dots[i][0].x, dots[i][3].y - dots[i][0].y);
             Point lbc = new Point(dots[i][2].x - dots[i][1].x, dots[i][2].y - dots[i][1].y);
-            Point lbd = new Point(dots[i][3].x - dots[i][1].x, dots[i][3].y - dots[i][1].y);
-            Point lca = new Point(dots[i][0].x - dots[i][2].x, dots[i][0].y - dots[i][2].y);
             Point lcd = new Point(dots[i][3].x - dots[i][2].x, dots[i][3].y - dots[i][2].y);
 
             //cross product
@@ -142,7 +170,7 @@ public class Tetragon {
             double l3 = lcd.x * (-lad.y) - lcd.y * (-lad.x);
             double l4 = (-lad.x) * (lab.y) - (-lad.y) * lab.x;
 
-            if ((l1 <= 0 && l2 <= 0 && l3 <= 0 && l4 <= 0) || (l1 >= 0 && l2 >= 0 && l3 >= 0 && l4 >= 0)) // if so, it means that we turn the same way each time
+            if ((l1 < 0 && l2 < 0 && l3 < 0 && l4 < 0) || (l1 > 0 && l2 > 0 && l3 > 0 && l4 > 0)) // if so, it means that we turn the same way each time
                 ress[i] = true;
             else
                 ress[i] = false;
