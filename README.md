@@ -10,3 +10,4 @@
 problem.Figures:Рисование фигур (точка, отрезок, треугольник, четырехугольник, окружность, круг)<br>
 problem.Tetragon:Четырехугольник<br>
 problem.Vector2:Двумерный вектор<br>
+problem.Point:точка<br>
