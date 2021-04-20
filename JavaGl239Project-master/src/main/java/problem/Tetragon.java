@@ -124,7 +124,6 @@ public class Tetragon {
     }
 
     public boolean is_degenerate () {
-        // the same stuff as in is_convex
         Point[][] dots = {{a, b, c, d}, {a, b, d, c}, {a, c, b, d}}; // all possible tetragons: 1 - normal, 2,3 - sides are intersecting with each other
         boolean[] ress = new boolean[3];
         for (int i = 0; i < 3; i++) {

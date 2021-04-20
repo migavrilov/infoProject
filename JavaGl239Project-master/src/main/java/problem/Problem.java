@@ -5,6 +5,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 /**
  * Класс задачи
@@ -60,6 +61,7 @@ public class Problem {
      * Решить задачу
      */
     public void solve() {
+
         if (points.size() < 4) { // not going to work if there is less than 4 dots <=> no tetragons
             System.out.println("Not enough dots");
             return;
@@ -76,7 +78,7 @@ public class Problem {
                             area = tet.get_convex_area(); // get area of convex tetragon
                         } else {
                             // now it can be either not convex or degenerate (triangle)
-                            if(tet.is_degenerate()) {  //we are not interested in degenerate tetragons, because they are triangles
+                            if(tet.is_degenerate()) {  //we are not interested in degenerate tetragons, because it means sides are overlapping or have angle 180 degrees - not actual triangle
                                 System.out.println("Some tetragons might me degenerate and therefore they were not shown");
                                 continue;
                             }
