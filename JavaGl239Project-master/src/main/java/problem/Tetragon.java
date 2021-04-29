@@ -13,6 +13,25 @@ public class Tetragon {
         this.d = d;
     }
 
+    static Tetragon getRandomTetragon() {
+        Point a = Point.getRandomPoint();
+        Point b = Point.getRandomPoint();
+        while (b.x == a.x && b.y == a.y)
+            b = Point.getRandomPoint();
+
+        Point c = Point.getRandomPoint();
+
+        while ((c.x == a.x && c.y == a.y) || (c.x == b.x && c.y == b.y))
+            c = Point.getRandomPoint();
+
+        Point d = Point.getRandomPoint();
+
+        while ((d.x == a.x && d.y == a.y) || (d.x == b.x && d.y == b.y) || (d.x == c.x && d.y == c.y))
+            d = Point.getRandomPoint();
+
+        return new Tetragon(a, b, c, d);
+    }
+
     public void render(GL2 gl, boolean fill, float width, float[] color) {
         renderQuad (gl, a, b, c, d, fill, width, color);
     }
